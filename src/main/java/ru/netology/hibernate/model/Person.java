@@ -1,14 +1,11 @@
-package ru.netology.hibernate;
-
+package ru.netology.hibernate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.io.Serializable;
-
 
 @Data
 @AllArgsConstructor
@@ -17,22 +14,13 @@ import java.io.Serializable;
 @Entity
 public class Person implements Serializable {
 
-    @Id
-    @Column
-    private String name;
+    @EmbeddedId
+    PersonKey personKey;
 
-    @Id
-    @Column
-    private String surname;
-
-    @Id
-    @Column
-    private int age;
-
-    @Column
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column
+    @Column(name = "city_of_living")
     private String cityOfLiving;
 
 }
