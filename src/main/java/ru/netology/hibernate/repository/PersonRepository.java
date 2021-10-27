@@ -3,28 +3,29 @@ package ru.netology.hibernate.repository;
 import org.springframework.stereotype.Repository;
 import ru.netology.hibernate.model.Person;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Repository
 public class PersonRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final CustomizedPersonRepository customizedPersonRepository;
 
-    public PersonRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public PersonRepository(CustomizedPersonRepository customizedPersonRepository) {
+        this.customizedPersonRepository = customizedPersonRepository;
     }
 
     public List<Person> getPersonsByCity(String city) {
-        TypedQuery<Person> query = entityManager.createQuery
-                ("select city from Person city where city.cityOfLiving =:city",
-                        Person.class);
-        query.setParameter("city", city);
-        return query.getResultList();
+        return customizedPersonRepository.findByCityOfLiving(city);
+    }
+
+    public List<Person> getPersonsByAge(int age) {
+        return customizedPersonRepository.findAllByPersonKey_AgeLessThanOrderByPersonKey_Age(age);
+    }
+
+    public Optional<Person> getPersonsByNameAndSurname(String name, String surname) {
+        return customizedPersonRepository.findPersonByPersonKey_NameAndPersonKey_Surname(name, surname);
     }
 }

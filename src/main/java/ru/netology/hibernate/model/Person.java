@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class Person implements Serializable {
 
     @EmbeddedId
-    PersonKey personKey;
+    private PersonKey personKey;
 
     @Column(name = "phone_number")
     private String phoneNumber;
